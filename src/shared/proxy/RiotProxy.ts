@@ -1,5 +1,6 @@
 import { LolApi } from 'twisted/dist/apis/lol/lol';
 import { RiotConfig } from '../config/RiotConfig';
+import { TimeMeasurement } from '../utils/TimeMeasurement';
 
 export class RiotProxy {
   private readonly lolApi: LolApi;
@@ -12,8 +13,19 @@ export class RiotProxy {
     return (await this.lolApi.Summoner.getByName(summonerName, this.config.region)).response;
   }
 
-  async getMatchIdsByPuuid(puuid: string) {
-    return (await this.lolApi.MatchV5.list(puuid, this.config.regionGroup)).response;
+  async getMatchIdsByPuuid(puuid: string, interval: TimeMeasurement) {
+    const currentEpochSeconds = Math.floor(Date.now() / 1000);
+    const startTime = currentEpochSeconds - interval.toSeconds();
+
+    return (await this.lolApi.MatchV5
+      .list(
+        puuid,
+        this.config.regionGroup,
+        {
+          queue: this.config.soloQueueId,
+          startTime,
+        },
+      )).response;
   }
 
   async getMatchById(id: string) {

@@ -6,6 +6,7 @@ import { chunkArray } from '../../shared/utils/chunkArray';
 import { SummonerMatchFetchRequetMessage } from '../../shared/types/message/SummonerMatchFetchRequestMessage';
 
 const BATCH_SIZE = 10;
+const MATCH_HISTORY_LOOKBACK_PERIOD_IN_HOURS = 1;
 
 export const handler = async () => {
   const { SUMMONER_MATCH_FETCH_REQUEST_QUEUE_URL } = process.env;
@@ -24,7 +25,10 @@ export const handler = async () => {
   console.log(`Executing sourceMatches for ${summoners.length} summoners`);
 
   const summonerPuuidMessageChunks: SummonerMatchFetchRequetMessage[][] = chunkArray(summoners
-    .map((summoner) => ({ puuid: summoner.puuid })), BATCH_SIZE);
+    .map((summoner) => ({
+      puuid: summoner.puuid,
+      lookbackPeriodInHours: MATCH_HISTORY_LOOKBACK_PERIOD_IN_HOURS,
+    })), BATCH_SIZE);
 
   const entryChunks = summonerPuuidMessageChunks
     .map((messages) => messages

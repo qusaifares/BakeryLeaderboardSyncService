@@ -11,9 +11,12 @@ export class RiotConfig {
 
   public readonly regionGroup: RegionGroups;
 
+  public readonly soloQueueId: number;
+
   constructor(options: RiotConfigOptions) {
     this.apiKey = options.apiKey;
     this.region = Regions.AMERICA_NORTH;
     this.regionGroup = regionToRegionGroup(this.region);
+    this.soloQueueId = 420;
   }
 }

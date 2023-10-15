@@ -1,5 +1,5 @@
 import { AwsConfig } from './AwsConfig';
-import { RiotProxy } from '../utils/RiotProxy';
+import { RiotProxy } from '../proxy/RiotProxy';
 import { RiotConfig } from './RiotConfig';
 
 export class ProxyConfig {
