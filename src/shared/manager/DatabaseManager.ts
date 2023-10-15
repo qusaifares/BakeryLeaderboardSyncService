@@ -20,9 +20,12 @@ export class DatabaseManager {
     this.secretId = process.env.DB_SECRET;
   }
 
-  private async initDataSource() {
+  public async getDataSource(): Promise<DataSource> {
+    if (this.dataSource.isInitialized) return this.dataSource;
+
     const dataSourceOptions = await this.getDataSourceOptions();
     this.dataSource = new DataSource(dataSourceOptions);
+    return this.dataSource.initialize();
   }
 
   private async getDataSourceOptions(): Promise<DataSourceOptions> {

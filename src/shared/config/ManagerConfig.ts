@@ -9,19 +9,11 @@ export class ManagerConfig {
 
   private secretsCacheManager: SecretsCacheManager;
 
-  constructor(private readonly awsConfig: AwsConfig, private readonly riotConfig: RiotConfig) {}
-
-  private proxyConfig: ProxyConfig;
-
-  private getProxyConfig(): ProxyConfig {
-    if (!this.proxyConfig) {
-      this.proxyConfig = new ProxyConfig(
-        this.awsConfig,
-        this.riotConfig,
-      );
-    }
-    return this.proxyConfig;
-  }
+  constructor(
+    private readonly awsConfig: AwsConfig,
+    private readonly riotConfig: RiotConfig,
+    private readonly proxyConfig: ProxyConfig,
+  ) {}
 
   public getDatabaseManager(): DatabaseManager {
     if (!this.databaseManager) {

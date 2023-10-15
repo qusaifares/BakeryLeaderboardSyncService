@@ -1,10 +1,43 @@
 import 'reflect-metadata';
+import { SendMessageBatchCommandInput } from '@aws-sdk/client-sqs';
+import { config } from '../../shared/config/Config';
+import { Summoner } from '../../shared/data/entities';
+import { chunkArray } from '../../shared/utils/chunkArray';
+import { SummonerMatchFetchRequetMessage } from '../../shared/types/message/SummonerMatchFetchRequestMessage';
 
-// import { AwsConfig } from '../config/AwsConfig';
+const BATCH_SIZE = 10;
+export const handler = async () => {
+  const { SUMMONER_MATCH_FETCH_REQUEST_QUEUE_URL } = process.env;
+  if (!SUMMONER_MATCH_FETCH_REQUEST_QUEUE_URL) return;
 
-// const awsConfig = new AwsConfig();
+  const databaseManager = config.getManagerConfig().getDatabaseManager();
+  const sqs = config.getAwsConfig().getSqs();
 
-export const handler = async (event: any) => {
-  if (!process.env.DB_SECRET) return;
-  console.log(event);
+  const dataSource = await databaseManager.getDataSource();
+
+  const summoners = await dataSource.manager.find(Summoner);
+
+  console.log(`Executing sourceMatches for ${summoners.length} summoners`);
+
+  const summonerPuuidMessageChunks: SummonerMatchFetchRequetMessage[][] = chunkArray(summoners
+    .map((summoner) => ({ puuid: summoner.puuid })), BATCH_SIZE);
+
+  const entryChunks = summonerPuuidMessageChunks
+    .map((messages) => messages
+      .map((message, i) => ({ Id: `${i}`, MessageBody: JSON.stringify(message) })));
+
+  const chunkedMessages: SendMessageBatchCommandInput[] = entryChunks
+    .map((entries) => ({
+      QueueUrl: SUMMONER_MATCH_FETCH_REQUEST_QUEUE_URL,
+      Entries: entries,
+    }));
+
+  chunkedMessages.forEach(async (message) => {
+    try {
+      const result = await sqs.sendMessageBatch(message);
+      console.log('Batch sent: ', result);
+    } catch (error) {
+      console.error('Error sending batch: ', error);
+    }
+  });
 };

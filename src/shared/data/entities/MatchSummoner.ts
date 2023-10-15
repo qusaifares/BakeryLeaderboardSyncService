@@ -20,7 +20,6 @@ export class MatchSummoner {
     championId: number;
 
   // Stats
-
   @Column()
     kills: number;
 

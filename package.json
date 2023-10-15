@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.427.0",
+    "@aws-sdk/client-sqs": "^3.428.0",
     "pg": "^8.11.3",
     "reflect-metadata": "^0.1.13",
     "twisted": "^1.53.2",
