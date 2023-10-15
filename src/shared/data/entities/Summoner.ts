@@ -19,6 +19,9 @@ export class Summoner {
     accountId: string;
 
   @Column()
+    name: string;
+
+  @Column()
     profileIconId: number;
 
   @Column()

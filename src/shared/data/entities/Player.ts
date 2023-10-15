@@ -12,8 +12,8 @@ export class Player {
   @Column()
     discordId: string;
 
-  @Column()
-    displayName: string;
+  // @Column()
+  //   displayName: string;
 
   @Column({ array: true })
     keyWords: string[];

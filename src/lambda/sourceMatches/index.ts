@@ -6,9 +6,13 @@ import { chunkArray } from '../../shared/utils/chunkArray';
 import { SummonerMatchFetchRequetMessage } from '../../shared/types/message/SummonerMatchFetchRequestMessage';
 
 const BATCH_SIZE = 10;
+
 export const handler = async () => {
   const { SUMMONER_MATCH_FETCH_REQUEST_QUEUE_URL } = process.env;
-  if (!SUMMONER_MATCH_FETCH_REQUEST_QUEUE_URL) return;
+  if (!SUMMONER_MATCH_FETCH_REQUEST_QUEUE_URL) {
+    console.log('SUMMONER_MATCH_FETCH_REQUEST_QUEUE_URL not found');
+    return;
+  }
 
   const databaseManager = config.getManagerConfig().getDatabaseManager();
   const sqs = config.getAwsConfig().getSqs();

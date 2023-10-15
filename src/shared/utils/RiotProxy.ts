@@ -8,15 +8,15 @@ export class RiotProxy {
     this.lolApi = new LolApi({ key: this.config.apiKey });
   }
 
-  getSummonerByName(summonerName: string) {
-    this.lolApi.Summoner.getByName(summonerName, this.config.region);
+  async getSummonerByName(summonerName: string) {
+    return (await this.lolApi.Summoner.getByName(summonerName, this.config.region)).response;
   }
 
-  getMatchIdsByPuuid(puuid: string) {
-    this.lolApi.MatchV5.list(puuid, this.config.regionGroup);
+  async getMatchIdsByPuuid(puuid: string) {
+    return (await this.lolApi.MatchV5.list(puuid, this.config.regionGroup)).response;
   }
 
-  getMatchById(id: string) {
-    this.lolApi.MatchV5.get(id, this.config.regionGroup);
+  async getMatchById(id: string) {
+    return (await this.lolApi.MatchV5.get(id, this.config.regionGroup)).response;
   }
 }
