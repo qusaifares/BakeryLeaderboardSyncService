@@ -4,11 +4,29 @@
   "description": "",
   "main": "build/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npx eslint . --ext .js,.jsx,.ts,.tsx",
+    "build": "tsc -p ."
   },
   "author": "Qusai Fares <qusaifares@gmail.com> (https://qusaifares.com/)",
   "license": "ISC",
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.124",
+    "@types/node": "^20.8.5",
+    "@types/pg": "^8.10.4",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
+    "eslint": "^8.51.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-plugin-import": "^2.28.1",
     "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.427.0",
+    "pg": "^8.11.3",
+    "reflect-metadata": "^0.1.13",
+    "twisted": "^1.53.2",
+    "typeorm": "^0.3.17"
   }
 }
