@@ -40,8 +40,10 @@ class Config {
   }
 
   getRiotConfig() {
+    if (!process.env.RIOT_API_SECRET) throw new Error('Unable to create RiotConfig instance. RIOT_API_SECRET environment variable is not defined');
+
     if (!this.riotConfig) {
-      this.riotConfig = new RiotConfig({ apiKey: 'RGAPI-68ae8b07-2f43-4af9-94fe-599f7447c6f4' });
+      this.riotConfig = new RiotConfig({ apiKey: process.env.RIOT_API_SECRET });
     }
     return this.riotConfig;
   }

@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS Lambda used to populate a database of players and their summoner IDs given a list of their summoner names.
+
+Resources:
+  SummonerSourceLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build/lambda/sourceSummoners/index.handler
+      Runtime: nodejs18.x
+      CodeUri: ./
+  SourceMatchesLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build/lambda/sourceMatches/index.handler
+      Runtime: nodejs18.x
+  GetMatchIdsForSummonerLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build/lambda/getMatchIdsForSummoner/index.handler
+      Runtime: nodejs18.x
+  CheckMatchExistenceLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build/lambda/checkMatchExistence/index.handler
+      Runtime: nodejs18.x
+      CodeUri: ./
+  FetchAndInsertMatchDataLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build/lambda/fetchAndInsertMatchData/index.handler
+      Runtime: nodejs18.x
+      CodeUri: ./
